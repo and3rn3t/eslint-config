@@ -1,0 +1,34 @@
+# Publish @and3rn3t/eslint-config to npm (public) whenever a GitHub Release is
+# published. Uses npm provenance (requires id-token: write + a public repo).
+#
+# One-time setup: add an npm automation token as the repo secret NPM_TOKEN.
+# Then publishing = bump version, push a tag, and cut a GitHub Release.
+name: Publish
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # npm provenance
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - run: npm publish --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

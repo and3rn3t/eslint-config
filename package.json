@@ -1,0 +1,58 @@
+{
+  "name": "@and3rn3t/eslint-config",
+  "version": "0.1.0",
+  "description": "Shared ESLint 9 flat config for and3rn3t React + TypeScript repos (ESLint 10 pending upstream plugin support).",
+  "type": "module",
+  "license": "MIT",
+  "author": "Matthew Anderson",
+  "homepage": "https://github.com/and3rn3t/eslint-config#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/and3rn3t/eslint-config.git"
+  },
+  "bugs": {
+    "url": "https://github.com/and3rn3t/eslint-config/issues"
+  },
+  "keywords": [
+    "eslint",
+    "eslintconfig",
+    "eslint-config",
+    "flat-config",
+    "react",
+    "typescript"
+  ],
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "files": [
+    "index.js"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "lint": "eslint index.js",
+    "prepare": "husky 2>/dev/null || true"
+  },
+  "peerDependencies": {
+    "eslint": "^9.28.0",
+    "typescript": ">=5.7"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@eslint/js": "^9.21.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.26",
+    "globals": "^16.0.0",
+    "typescript-eslint": "^8.38.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
