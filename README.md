@@ -59,10 +59,13 @@ consumer's `node_modules` normally.
 ## What's in it
 
 - `@eslint/js` recommended + `typescript-eslint` recommended
-- `eslint-plugin-react` (recommended + jsx-runtime), `react-hooks`, `react-refresh`
-- `react/react-in-jsx-scope` and `react/prop-types` off (React 19 + TS)
-- `no-unused-vars` as a warning with `^_` ignore pattern for intentional unused
+- `react-hooks` + `react-refresh` (recommended), applied to `**/*.{ts,tsx}`
+- `react-refresh/only-export-components` warn; `no-unused-vars` warn with the `^_` ignore pattern
 - Ignores `dist`, `build`, `coverage`, `node_modules`
+
+This is the **common base** across the React/TS repos. It intentionally omits
+`eslint-plugin-react` (only flipper used it). Repos that need extra rules, plugins
+(e.g. `jsx-a11y`), or file contexts extend it: `export default [...and3rn3t, …]`.
 
 ## Publishing (public npm)
 
@@ -92,7 +95,19 @@ registry version: replace `"@and3rn3t/eslint-config": "file:../eslint-config"` w
 
 ## Rollout order
 
-Adopt in the flat-config React/TS repos: **flipper, huggingface, and3rn3t, guess,
-health, homehub, jonah**. Do one, confirm `npm run lint` is clean, then the rest.
-When `eslint-plugin-react` ships ESLint 10 support, bump this package's deps +
-peer to 10 once and every consumer moves together.
+Adopted so far: **flipper, huggingface, jonah** (eslint 9 / react-hooks 5 — their
+base matches this config exactly, so only their extra rules are layered on).
+
+Deliberately **not** adopted:
+
+- **homehub** — already on **eslint 10** (react-hooks 7). It's ahead of this
+  config; fold it in when this package moves to eslint 10.
+- **guess** — react-hooks 7 + `jsx-a11y` + multi-context Worker/script/ui overrides.
+- **health** — type-aware (`projectService`, `no-floating-promises`) + `jsx-a11y`;
+  its config is the sophisticated one others could learn from.
+- **and3rn3t** — plain JS + Cloudflare Worker portfolio (no React/TS); uses
+  `eslint-config-prettier`. This React/TS config doesn't apply.
+
+**Next step to unify further:** when moving to eslint 10, bump this package's deps
+(`@eslint/js`→10, `react-hooks`→7, `globals`→17) + peer, publish, and homehub +
+the eslint-9 adopters all land on 10 together.

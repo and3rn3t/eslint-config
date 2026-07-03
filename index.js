@@ -5,54 +5,44 @@
 //   import and3rn3t from '@and3rn3t/eslint-config'
 //   export default and3rn3t
 //
-// Or extend it:
+// Extend with repo-specific rules / file contexts:
 //
 //   import and3rn3t from '@and3rn3t/eslint-config'
 //   export default [
 //     ...and3rn3t,
-//     { rules: { 'no-console': 'warn' } },
+//     { rules: { '@typescript-eslint/no-explicit-any': 'warn' } },
 //   ]
 //
-// Flat config for ESLint 9. (ESLint 10 is held back until eslint-plugin-react
-// ships a v10-compatible peer range; bump this package's deps + peer when it does.)
+// This is the COMMON BASE shared across the React/TS repos: @eslint/js +
+// typescript-eslint recommended, react-hooks, react-refresh, and the `^_`
+// no-unused-vars convention. It intentionally does NOT include
+// eslint-plugin-react (only flipper used it) — add it per-repo if needed.
+//
+// Flat config for ESLint 9. (ESLint 10 is held back until the plugin ecosystem
+// catches up; bump this package's deps + peer when it does.)
 
 import js from '@eslint/js'
 import globals from 'globals'
-import reactPlugin from 'eslint-plugin-react'
-import reactHooksPlugin from 'eslint-plugin-react-hooks'
-import reactRefreshPlugin from 'eslint-plugin-react-refresh'
-import tsEslint from 'typescript-eslint'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import tseslint from 'typescript-eslint'
 
 /** The shared React + TypeScript flat config (spread-ready array). */
-export const react = tsEslint.config(
-  { ignores: ['dist', 'build', 'node_modules', 'coverage'] },
+export const react = tseslint.config(
+  { ignores: ['dist', 'build', 'coverage', 'node_modules'] },
   {
-    files: ['**/*.{js,jsx,mjs,cjs,ts,tsx}'],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 'latest',
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
-      parserOptions: {
-        ecmaFeatures: { jsx: true },
-      },
-    },
-    settings: {
-      react: { version: 'detect' },
+      globals: globals.browser,
     },
     plugins: {
-      react: reactPlugin,
-      'react-hooks': reactHooksPlugin,
-      'react-refresh': reactRefreshPlugin,
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
     },
     rules: {
-      ...js.configs.recommended.rules,
-      ...reactPlugin.configs.recommended.rules,
-      ...reactPlugin.configs['jsx-runtime'].rules,
-      ...reactHooksPlugin.configs.recommended.rules,
-      'react/prop-types': 'off',
-      'react/react-in-jsx-scope': 'off',
+      ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       '@typescript-eslint/no-unused-vars': [
         'warn',
@@ -60,7 +50,6 @@ export const react = tsEslint.config(
       ],
     },
   },
-  tsEslint.configs.recommended,
 )
 
 export default react
