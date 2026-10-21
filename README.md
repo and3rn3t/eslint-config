@@ -1,19 +1,24 @@
 # @and3rn3t/eslint-config
 
-Shared **ESLint 9** flat config for and3rn3t React + TypeScript repos. Adopting
+Shared **ESLint 10** flat config for and3rn3t React + TypeScript repos. Adopting
 this package versions the lint rules in one place instead of copy-pasting
 `eslint.config.js` into every repo.
 
-> **Why ESLint 9, not 10?** `eslint-plugin-react` doesn't support ESLint 10 yet
-> (its peer range caps at eslint 9, and it errors under 10). This package stays on
-> the eslint 9 line until that lands upstream — then a single dep bump here moves
-> every consumer to 10 at once.
+> **ESLint 10 since 0.3.0.** The old blocker (`eslint-plugin-react` capping at
+> eslint 9) never applied to this base, which doesn't include that plugin.
+> 0.3.0 moves to `@eslint/js` 10, `eslint-plugin-react-hooks` 7, `globals` 17 and
+> requires `eslint@^10`. Stay on `^0.2.0` while a repo is still on eslint 9.
+>
+> react-hooks 7's recommended set adds React Compiler checks (`purity`, `refs`,
+> `set-state-in-effect`, …) as errors. Here they're **warnings** so adopting the
+> config never breaks a build; `rules-of-hooks` (error) and `exhaustive-deps`
+> (warn) keep their usual severity. Tighten per repo once the code is clean.
 
 ## Install
 
 ```sh
 # in a consuming repo
-npm i -D @and3rn3t/eslint-config eslint@^9
+npm i -D @and3rn3t/eslint-config eslint@^10
 # (pnpm/yarn equivalents work too)
 ```
 
@@ -95,19 +100,21 @@ registry version: replace `"@and3rn3t/eslint-config": "file:../eslint-config"` w
 
 ## Rollout order
 
-Adopted so far: **flipper, huggingface, jonah** (eslint 9 / react-hooks 5 — their
-base matches this config exactly, so only their extra rules are layered on).
+Adopted so far: **flipper, huggingface, jonah** on `^0.2.0` (eslint 9), and
+**fastlane** (PR #64). Moving them to 0.3.0 means bumping `eslint` to `^10` in the
+same PR — jonah lints clean under 0.3.0 with no changes.
 
 Deliberately **not** adopted:
 
-- **homehub** — already on **eslint 10** (react-hooks 7). It's ahead of this
-  config; fold it in when this package moves to eslint 10.
+- **homehub** — on eslint 10 / react-hooks 7, so it can adopt 0.3.0 directly; keep
+  its local `no-explicit-any: warn` override (33 `any`s in `src/`).
 - **guess** — react-hooks 7 + `jsx-a11y` + multi-context Worker/script/ui overrides.
 - **health** — type-aware (`projectService`, `no-floating-promises`) + `jsx-a11y`;
   its config is the sophisticated one others could learn from.
 - **and3rn3t** — plain JS + Cloudflare Worker portfolio (no React/TS); uses
   `eslint-config-prettier`. This React/TS config doesn't apply.
 
-**Next step to unify further:** when moving to eslint 10, bump this package's deps
-(`@eslint/js`→10, `react-hooks`→7, `globals`→17) + peer, publish, and homehub +
-the eslint-9 adopters all land on 10 together.
+**Next step:** publish 0.3.0 (cut a `v0.3.0` GitHub Release — `publish.yml` does
+the rest), then adopt it in homehub and net-traffic (eslint 10 already; keep their
+`no-explicit-any: warn` overrides) and move flipper, huggingface, jonah and
+fastlane from eslint 9 to 10 alongside the bump.
