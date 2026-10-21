@@ -1,8 +1,9 @@
 # Publish @and3rn3t/eslint-config to npm (public) whenever a GitHub Release is
 # published. Uses npm provenance (requires id-token: write + a public repo).
 #
-# One-time setup: add an npm automation token as the repo secret NPM_TOKEN.
-# Then publishing = bump version, push a tag, and cut a GitHub Release.
+# Auth is npm trusted publishing (OIDC via id-token: write) — configured on
+# npmjs.com for and3rn3t/eslint-config + this workflow, so no NPM_TOKEN secret.
+# Publishing = bump version, push a tag, and cut a GitHub Release.
 name: Publish
 
 on:
@@ -28,7 +29,7 @@ jobs:
         with:
           node-version-file: .nvmrc
           registry-url: https://registry.npmjs.org
+      # Trusted publishing (OIDC) needs npm >= 11.5.1.
+      - run: npm install -g npm@^11.5.1
       - run: npm ci
       - run: npm publish --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

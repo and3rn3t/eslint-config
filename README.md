@@ -90,9 +90,10 @@ workflow (it can't be generated from a local publish).
    in `publishConfig`, so a plain `npm publish` works.)
 
 **Ongoing (automated):** `.github/workflows/publish.yml` publishes to npm on every
-GitHub Release. Add an npm **automation token** as the repo secret `NPM_TOKEN`
-once; after that, publishing = bump the version, push a `vX.Y.Z` tag, and cut a
-Release. Renovate then opens bump PRs in consumer repos.
+GitHub Release, authenticating with npm **trusted publishing** (OIDC) — the
+package's npmjs.com settings trust `and3rn3t/eslint-config` + `publish.yml`, so
+there is no token to rotate. Publishing = bump the version, push a `vX.Y.Z` tag,
+and cut a Release. Renovate then opens bump PRs in consumer repos.
 
 **After the first publish**, switch each consumer from the local link to the
 registry version: replace `"@and3rn3t/eslint-config": "file:../eslint-config"` with
