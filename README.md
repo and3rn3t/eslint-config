@@ -4,6 +4,8 @@ Shared **ESLint 10** flat config for and3rn3t React + TypeScript repos. Adopting
 this package versions the lint rules in one place instead of copy-pasting
 `eslint.config.js` into every repo.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 > **ESLint 10 since 0.3.0.** The old blocker (`eslint-plugin-react` capping at
 > eslint 9) never applied to this base, which doesn't include that plugin.
 > 0.3.0 moves to `@eslint/js` 10, `eslint-plugin-react-hooks` 7, `globals` 17 and
@@ -119,3 +121,7 @@ Deliberately **not** adopted:
 the rest), then adopt it in homehub and net-traffic (eslint 10 already; keep their
 `no-explicit-any: warn` overrides) and move flipper, huggingface, jonah and
 fastlane from eslint 9 to 10 alongside the bump.
+
+## License
+
+[MIT](LICENSE)
