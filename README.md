@@ -47,6 +47,46 @@ export default [
 ]
 ```
 
+## Prettier and tsconfig (since 0.4.0)
+
+The same package ships a Prettier base and a tsconfig, so formatting and compiler
+settings are versioned alongside the lint rules.
+
+**Prettier** — the base holds only what every repo already agrees on (single
+quotes, `es5` trailing commas, 100 columns, 2 spaces, LF). `semi` and `arrowParens`
+are split across repos, so they stay at Prettier's defaults; override instead of
+reformatting:
+
+```jsonc
+// package.json, no overrides
+"prettier": "@and3rn3t/eslint-config/prettier"
+```
+
+```js
+// prettier.config.js, with overrides / Tailwind class sorting
+import base from '@and3rn3t/eslint-config/prettier-tailwind' // or /prettier
+export default { ...base, semi: false }
+```
+
+`prettier-tailwind` needs `prettier-plugin-tailwindcss` installed in the repo.
+
+**tsconfig** — strict Vite + React app base:
+
+```json
+{
+  "extends": "@and3rn3t/eslint-config/tsconfig.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "paths": { "@/*": ["./src/*"] }
+  },
+  "include": ["src"]
+}
+```
+
+`paths`, `include` and `tsBuildInfoFile` resolve relative to the file that declares
+them, so they always stay in the repo. Stricter flags (`noUnusedLocals`,
+`noUncheckedIndexedAccess`, `verbatimModuleSyntax`) are per-repo opt-ins.
+
 ## Local (unpublished) linking via `file:`
 
 Until this package is published to a registry, consumers reference it as
@@ -77,7 +117,7 @@ This is the **common base** across the React/TS repos. It intentionally omits
 ## Publishing (public npm)
 
 Configured for the public npm registry (`publishConfig.access: public`).
-`main`/`exports`/`files` ship only `index.js`. Provenance is added by the CI
+`main`/`exports`/`files` ship `index.js`, `prettier.js`, `prettier-tailwind.js` and `tsconfig.json`. Provenance is added by the CI
 workflow (it can't be generated from a local publish).
 
 **First publish (manual, one time):**

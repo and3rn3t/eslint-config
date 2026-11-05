@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-05
+
+### Added
+
+- `@and3rn3t/eslint-config/prettier` — shared Prettier base (single quotes, `es5`
+  trailing commas, 100 columns, LF). `semi` and `arrowParens` stay at Prettier's
+  defaults; repos that differ override them.
+- `@and3rn3t/eslint-config/prettier-tailwind` — the base plus
+  `prettier-plugin-tailwindcss` (optional peer) with `cn`/`clsx`/`cva`.
+- `@and3rn3t/eslint-config/tsconfig.json` — strict Vite + React app base to
+  `extends` from. `paths`, `include` and `tsBuildInfoFile` stay in the repo.
+
 ## [0.3.0] - 2026-10-21
 
 ### Changed
@@ -25,5 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `.wrangler` to the default ignores.
 
-[Unreleased]: https://github.com/and3rn3t/eslint-config/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/and3rn3t/eslint-config/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/and3rn3t/eslint-config/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/and3rn3t/eslint-config/releases/tag/v0.3.0

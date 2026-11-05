@@ -1,7 +1,7 @@
 {
   "name": "@and3rn3t/eslint-config",
-  "version": "0.3.0",
-  "description": "Shared ESLint 10 flat config for and3rn3t React + TypeScript repos.",
+  "version": "0.4.0",
+  "description": "Shared ESLint 10 flat config, Prettier base and tsconfig for and3rn3t React + TypeScript repos.",
   "type": "module",
   "license": "MIT",
   "author": "Matthew Anderson",
@@ -19,14 +19,23 @@
     "eslint-config",
     "flat-config",
     "react",
-    "typescript"
+    "typescript",
+    "prettier",
+    "prettier-config",
+    "tsconfig"
   ],
   "main": "index.js",
   "exports": {
-    ".": "./index.js"
+    ".": "./index.js",
+    "./prettier": "./prettier.js",
+    "./prettier-tailwind": "./prettier-tailwind.js",
+    "./tsconfig.json": "./tsconfig.json"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "prettier.js",
+    "prettier-tailwind.js",
+    "tsconfig.json"
   ],
   "engines": {
     "node": ">=24"
@@ -37,10 +46,18 @@
   },
   "peerDependencies": {
     "eslint": "^10.0.0",
-    "typescript": ">=5.7"
+    "typescript": ">=5.7",
+    "prettier": "^3.0.0",
+    "prettier-plugin-tailwindcss": ">=0.6"
   },
   "peerDependenciesMeta": {
     "typescript": {
+      "optional": true
+    },
+    "prettier": {
+      "optional": true
+    },
+    "prettier-plugin-tailwindcss": {
       "optional": true
     }
   },
